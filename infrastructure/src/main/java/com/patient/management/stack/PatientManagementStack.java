@@ -105,6 +105,7 @@ public class PatientManagementStack extends Stack {
                 .vpc(vpc)
                 .instanceType(InstanceType.of(InstanceClass.BURSTABLE2, InstanceSize.MICRO))
                 .allocatedStorage(20)
+                .storageEncrypted(true)
                 .credentials(Credentials.fromGeneratedSecret("admin_user"))
                 .databaseName(dbName)
                 .build();
@@ -193,9 +194,10 @@ public class PatientManagementStack extends Stack {
             envVars.put("SPRING_SQL_INIT_MODE", "always");
             envVars.put("SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT", "60000");
 
-            containerDefinitionOptions.environment(envVars);
-            taskDefinition.addContainer(imageName + "Container", containerDefinitionOptions.build());
         }
+
+        containerDefinitionOptions.environment(envVars);
+        taskDefinition.addContainer(imageName + "Container", containerDefinitionOptions.build());
 
         return FargateService.Builder.create(this, id)
                 .cluster(ecsCluster)
