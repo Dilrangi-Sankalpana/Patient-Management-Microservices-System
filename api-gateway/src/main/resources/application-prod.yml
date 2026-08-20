@@ -1,0 +1,48 @@
+server:
+  port: 4004
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+
+            - id: auth-service-route
+              uri: http://host.docker.internal:4005
+              predicates:
+                - Path=/api-gateway/auth/**
+              filters:
+                - StripPrefix=2
+
+            - id: auth-service-api-docs-route
+              uri: http://host.docker.internal:4005
+              predicates:
+                - Path=/api-docs/auth
+              filters:
+                - RewritePath=/api-docs/auth,/v3/api-docs
+
+            ## REST Client --> http://localhost:4004/api-gateway/patient
+            ## API Gateway --> http://patient-service:4000/patient
+            - id: patient-service-route
+              uri: http://host.docker.internal:4000
+              predicates:
+                - Path=/api-gateway/patient/**
+              filters:
+                - StripPrefix=1
+                - JwtValidation
+
+            ## REST Client --> http://localhost:4004/api-docs/patient
+            ## API Gateway --> http://patient-service:4000/v3/api-docs
+            - id: patient-service-api-docs-route
+              uri: http://host.docker.internal:4000
+              predicates:
+                - Path=/api-docs/patient
+              filters:
+                - RewritePath=/api-docs/patient,/v3/api-docs
+
+
+            - id: patient-service-swagger-ui
+              uri: http://host.docker.internal:4000
+              predicates:
+                - Path=/swagger-ui.html
