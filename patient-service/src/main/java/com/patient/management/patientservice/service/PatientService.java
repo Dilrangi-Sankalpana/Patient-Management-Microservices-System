@@ -4,7 +4,6 @@ import com.patient.management.patientservice.dto.PatientRequestDTO;
 import com.patient.management.patientservice.dto.PatientResponseDTO;
 import com.patient.management.patientservice.exception.EmailAlreadyExistsException;
 import com.patient.management.patientservice.exception.PatientNotFoundException;
-import com.patient.management.patientservice.grpc.BillingServiceGrpcClient;
 import com.patient.management.patientservice.mapping.PatientMapper;
 import com.patient.management.patientservice.entity.Patient;
 import com.patient.management.patientservice.repository.PatientRepository;
@@ -19,7 +18,7 @@ public class PatientService {
     private final PatientRepository patientRepository;
     private final OutboxService outboxService;
 
-    public PatientService(PatientRepository patientRepository, BillingServiceGrpcClient billingServiceGrpcClient, OutboxService outboxService) {
+    public PatientService(PatientRepository patientRepository, OutboxService outboxService) {
 
         this.patientRepository = patientRepository;
         this.outboxService = outboxService;

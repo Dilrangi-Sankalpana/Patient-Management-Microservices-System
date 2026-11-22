@@ -2,6 +2,8 @@ FROM maven:3.9.9-eclipse-temurin-21 AS builder
 
 WORKDIR /app
 
+##This is done separately for caching optimization-
+##If dependencies don’t change, Docker won’t re-download them
 COPY pom.xml .
 
 RUN mvn dependency:go-offline -B
