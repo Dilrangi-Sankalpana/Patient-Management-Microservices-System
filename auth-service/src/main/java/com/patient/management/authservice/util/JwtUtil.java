@@ -14,13 +14,13 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final Key secretKey;
+    private final Key signingKey;
 
     public JwtUtil(@Value("${jwt.secret}") String secret) {
         byte[] decodedKey = Base64.getDecoder()
-                .decode(secret.getBytes(StandardCharsets.UTF_8));
+                .decode(secret);
 
-        this.secretKey = Keys.hmacShaKeyFor(decodedKey);
+        this.signingKey = Keys.hmacShaKeyFor(decodedKey);
     }
 
     public String generateToken(String email, String role) {
@@ -29,13 +29,14 @@ public class JwtUtil {
                 .claim("role", role)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000*60*60))
-                .signWith(secretKey)
+                .signWith(signingKey)
                 .compact();
     }
 
     public void validateToken(String token) {
-        Jwts.parser().verifyWith((SecretKey) secretKey)
-             .build()
-             .parseSignedClaims(token);
+        Jwts.parser()
+                .verifyWith((SecretKey) signingKey)
+                .build()
+                .parseSignedClaims(token);
     }
 }

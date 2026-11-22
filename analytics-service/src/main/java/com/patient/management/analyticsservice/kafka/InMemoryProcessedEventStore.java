@@ -15,7 +15,7 @@ public class InMemoryProcessedEventStore implements ProcessedEventStore {
     private static final int MAX_ENTRIES = 10_000;
 
     private final Set<String> seen = Collections.newSetFromMap(
-            Collections.synchronizedMap(new LinkedHashMap<String, Boolean>() {
+            Collections.synchronizedMap(new LinkedHashMap<>() {
                 @Override
                 protected boolean removeEldestEntry(Map.Entry<String, Boolean> eldest) {
                     return size() > MAX_ENTRIES;
