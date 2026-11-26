@@ -36,7 +36,7 @@ public class PatientApiIntegrationTest {
         given()
                 .header("Authorization", "Bearer " + token)
                 .when()
-                .get("/api-gateway/patient")
+                .get("/api-gateway/patients")
                 .then()
                 .statusCode(200)
                 .body("patients", notNullValue());

@@ -27,7 +27,7 @@ spring:
             - id: patient-service-route
               uri: http://patient-service.patient-management.local:4000
               predicates:
-                - Path=/api-gateway/patient/**
+                - Path=/api-gateway/patients/**
               filters:
                 - StripPrefix=1
                 - JwtValidation
@@ -37,11 +37,11 @@ spring:
             - id: patient-service-api-docs-route
               uri: http://patient-service.patient-management.local:4000
               predicates:
-                - Path=/api-docs/patient
+                - Path=/api-docs/patients
               filters:
-                - RewritePath=/api-docs/patient,/v3/api-docs
+                - RewritePath=/api-docs/patients,/v3/api-docs
 
             - id: patient-service-swagger-ui
               uri: http://patient-service.patient-management.local:4000
               predicates:
-                - Path=/swagger-ui.html
+                - Path=/swagger-ui.html/**

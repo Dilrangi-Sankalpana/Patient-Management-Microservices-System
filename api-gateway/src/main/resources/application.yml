@@ -45,4 +45,4 @@ spring:
             - id: patient-service-swagger-ui
               uri: http://patient-service:4000
               predicates:
-                - Path=/swagger-ui.html
+                - Path=/swagger-ui.html/**
